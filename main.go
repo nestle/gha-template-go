@@ -27,7 +27,7 @@ func main() {
 
 	fmt.Printf("Hello %s\n", whoToGreet)
 	currentTime := time.Now()
-	stringToAppend := "CURRENT_TIME=" + currentTime.String()
+	stringToAppend := "CURRENT_TIME=" + currentTime.Format(time.RFC1123)
 
 	appendStringToFile(stringToAppend, os.Getenv("GITHUB_OUTPUT"))
 }
