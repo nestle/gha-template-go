@@ -28,4 +28,4 @@ jobs:
           who-to-greet: 'Mona the Octocat'
   
       - name: Check output
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+        run: echo "The time was ${{ steps.hello.outputs.CURRENT_TIME }}"
