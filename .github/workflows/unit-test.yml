@@ -1,0 +1,31 @@
+name: Unit Test
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'user/**'
+      - 'feat/**'
+  pull_request:
+    branches: 
+      - 'main'
+
+jobs:
+  unit_test:
+    runs-on: ubuntu-latest
+    name: Unit Test
+    
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Check-out Repository 🛎
+        uses: actions/checkout@v3
+        
+      - name: Check functionality
+        uses: ./ # Uses an action in the root directory
+        id: hello
+        with:
+          who-to-greet: 'Mona the Octocat'
+  
+      - name: Check output
+        run: echo "The time was ${{ steps.hello.outputs.time }}"

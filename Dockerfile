@@ -1,8 +1,19 @@
-# Container image that runs your code
-FROM alpine:3.10
+# Build application
+# https://github.com/GoogleContainerTools/distroless/
+FROM golang:1.19 as build
 
-# Copies your code file from your action repository to the filesystem path `/` of the container
-COPY entrypoint.sh /entrypoint.sh
+WORKDIR /go/src/app
+COPY . .
 
-# Code file to execute when the docker container starts up (`entrypoint.sh`)
-ENTRYPOINT ["/entrypoint.sh"]
+RUN go mod download
+RUN go vet -v
+RUN go test -v
+
+RUN CGO_ENABLED=0 go build -o /go/bin/app
+
+# Copy application into base image
+FROM gcr.io/distroless/static-debian11
+
+COPY --from=build /go/bin/app /
+
+ENTRYPOINT ["/app"]
